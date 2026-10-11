@@ -1,3 +1,18 @@
 [submodule "upstream/PayloadsAllTheThings"]
 	path = upstream/PayloadsAllTheThings
 	url = https://github.com/swisskyrepo/PayloadsAllTheThings.git
+[submodule "upstream/CheatSheetSeries"]
+	path = upstream/CheatSheetSeries
+	url = https://github.com/OWASP/CheatSheetSeries.git
+[submodule "upstream/ysoserial.net"]
+	path = upstream/ysoserial.net
+	url = https://github.com/pwntester/ysoserial.net.git
+[submodule "upstream/awesome-nodejs-security"]
+	path = upstream/awesome-nodejs-security
+	url = https://github.com/lirantal/awesome-nodejs-security.git
+[submodule "upstream/graphql-threat-matrix"]
+	path = upstream/graphql-threat-matrix
+	url = https://github.com/nicholasaleks/graphql-threat-matrix.git
+[submodule "upstream/graphql-cop"]
+	path = upstream/graphql-cop
+	url = https://github.com/dolevf/graphql-cop.git
