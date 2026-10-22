@@ -26,6 +26,7 @@ stacks that it doesn't go deep on.
 
   Originally authored for stacks with no good existing equivalent:
   * [Angular](methodologies/angular/README.md)
+  * [Ruby on Rails](methodologies/ruby/README.md) — ASVS 5.0-aligned (one page per ASVS chapter)
   * [Spring Boot](methodologies/springboot/README.md)
 
   Pointer pages into the other submodules above, for stacks where a popular
