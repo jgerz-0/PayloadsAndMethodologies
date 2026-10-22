@@ -16,3 +16,6 @@
 [submodule "upstream/graphql-cop"]
 	path = upstream/graphql-cop
 	url = https://github.com/dolevf/graphql-cop.git
+[submodule "upstream/ASVS"]
+	path = upstream/ASVS
+	url = https://github.com/OWASP/ASVS.git

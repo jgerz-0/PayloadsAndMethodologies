@@ -11,13 +11,20 @@ stacks that it doesn't go deep on.
   read-only (see [Updating](#updating-upstream) below):
   * [PayloadsAllTheThings](upstream/PayloadsAllTheThings/) — the core payload library
   * [CheatSheetSeries](upstream/CheatSheetSeries/) (OWASP)
+  * [ASVS](upstream/ASVS/) (OWASP Application Security Verification Standard)
   * [ysoserial.net](upstream/ysoserial.net/)
   * [awesome-nodejs-security](upstream/awesome-nodejs-security/)
   * [graphql-threat-matrix](upstream/graphql-threat-matrix/)
   * [graphql-cop](upstream/graphql-cop/)
 * **[`methodologies/`](methodologies/README.md)** — stack-specific testing
-  methodologies that complement the upstream payload library. Originally
-  authored for stacks with no good existing equivalent:
+  methodologies that complement the upstream payload library.
+  * [**ASVS 5.0 base**](methodologies/_asvs-base/README.md) — framework-agnostic
+    source of truth, one page per ASVS chapter (V1–V17). The framework
+    methodologies below are generated from it by projecting each ASVS
+    requirement onto the stack, via the `create-methodology` skill
+    ([`.claude/skills/create-methodology`](.claude/skills/create-methodology/SKILL.md)).
+
+  Originally authored for stacks with no good existing equivalent:
   * [Angular](methodologies/angular/README.md)
   * [Spring Boot](methodologies/springboot/README.md)
 

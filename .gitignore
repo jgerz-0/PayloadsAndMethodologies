@@ -1,3 +1,4 @@
-.claude/
+.claude/*
+!.claude/skills/
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
