@@ -47,11 +47,11 @@ A cloud engagement often spans all three: the **control plane** (this base), the
           cloud base (_cloud-base/)              provider methodology
         MITRE ATT&CK cloud tactics              (aws/, gcp/, azure/)
 ┌──────────────────────────────────┐      ┌────────────────────────────────────┐
-│ TA0006 Credential Access         │      │ aws/01-access-and-credentials.md    │
+│ TA0006 Credential Access         │      │ aws/02-access-and-credentials.md    │
 │   T1552.005 Instance Metadata    │ ───▶ │   T1552.005 → IMDSv1 creds via SSRF │
 │   T1555.006 Cloud Secrets Stores │      │     curl 169.254.169.254/...        │
 │   ... (verbatim ATT&CK)          │      │     AccessDenied vs creds returned; │
-│   x Prowler TTP checks           │      │     Prowler ec2_imdsv2_enabled      │
+│   x Prowler TTP checks           │      │     Prowler ec2_instance_imdsv2_... │
 └──────────────────────────────────┘      └────────────────────────────────────┘
         what the attacker does                     how to test it here
 ```

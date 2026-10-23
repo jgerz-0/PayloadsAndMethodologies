@@ -39,6 +39,11 @@ stacks that it doesn't go deep on.
   * [Angular](methodologies/angular/README.md)
   * [Spring Boot](methodologies/springboot/README.md)
 
+  Cloud (generated from the cloud attack base, by kill-chain phase):
+  * [AWS](methodologies/aws/README.md)
+  * [GCP](methodologies/gcp/README.md)
+  * [Azure](methodologies/azure/README.md)
+
   Pointer pages into the other submodules above, for stacks where a popular
   community methodology/tool already covers it well:
   * [.NET / ASP.NET Core](methodologies/dotnet/README.md)
