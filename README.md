@@ -37,6 +37,8 @@ stacks that it doesn't go deep on.
 
   Originally authored for stacks with no good existing equivalent:
   * [Angular](methodologies/angular/README.md)
+  * [Flutter](methodologies/flutter/README.md) — MASVS v2-aligned mobile client
+    (one page per MASVS category); backend API tested against the ASVS base
   * [Ruby on Rails](methodologies/ruby/README.md) — ASVS 5.0-aligned (one page per ASVS chapter)
   * [Spring Boot](methodologies/springboot/README.md)
 
