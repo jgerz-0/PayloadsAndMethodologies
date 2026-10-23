@@ -12,6 +12,8 @@ stacks that it doesn't go deep on.
   * [PayloadsAllTheThings](upstream/PayloadsAllTheThings/) — the core payload library
   * [CheatSheetSeries](upstream/CheatSheetSeries/) (OWASP)
   * [ASVS](upstream/ASVS/) (OWASP Application Security Verification Standard)
+  * [MASVS](upstream/MASVS/) (OWASP Mobile Application Security Verification Standard)
+  * [MASTG](upstream/MASTG/) (OWASP Mobile Application Security Testing Guide)
   * [ysoserial.net](upstream/ysoserial.net/)
   * [awesome-nodejs-security](upstream/awesome-nodejs-security/)
   * [graphql-threat-matrix](upstream/graphql-threat-matrix/)
@@ -19,9 +21,14 @@ stacks that it doesn't go deep on.
 * **[`methodologies/`](methodologies/README.md)** — stack-specific testing
   methodologies that complement the upstream payload library.
   * [**ASVS 5.0 base**](methodologies/_asvs-base/README.md) — framework-agnostic
-    source of truth, one page per ASVS chapter (V1–V17). The framework
-    methodologies below are generated from it by projecting each ASVS
-    requirement onto the stack, via the `create-methodology` skill
+    source of truth for **web/API** stacks, one page per ASVS chapter (V1–V17).
+  * [**MASVS v2 base**](methodologies/_masvs-base/README.md) — the **mobile**
+    sibling, one page per MASVS category (8), controls verbatim + linked MASTG
+    test procedures.
+
+    The framework methodologies below are generated from the right base by
+    projecting each ASVS requirement / MASVS control onto the stack, via the
+    `create-methodology` skill
     ([`.claude/skills/create-methodology`](.claude/skills/create-methodology/SKILL.md)).
 
   Originally authored for stacks with no good existing equivalent:

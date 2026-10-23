@@ -2,45 +2,78 @@
 name: create-methodology
 description: >-
   Generate a framework-specific offensive-security testing methodology from the
-  OWASP ASVS 5.0 base in this repo (methodologies/_asvs-base/). Use this
-  WHENEVER the user asks to "create a <framework> methodology", "build/add/
-  generate an ASVS methodology" for a stack (Ruby on Rails, .NET / ASP.NET,
-  Node.js / Express, Django, Flask, Laravel, Spring Boot, Go, Angular, React,
-  etc.), to "map ASVS to <framework>", or wants a per-ASVS-chapter pentest
-  methodology with test payloads and secure-vs-insecure response examples.
-  It walks the ASVS base chapter by chapter and projects each requirement onto
-  the target stack: the concrete mechanism/sink, how to test it, payload(s),
-  and positive (secure) vs negative (insecure) response examples. Always use
-  this for methodology-authoring requests in this repo even if the user does
-  not say the word "ASVS".
+  OWASP verification-standard bases in this repo — the ASVS 5.0 base
+  (methodologies/_asvs-base/) for web apps / APIs / backends, and the MASVS v2
+  base (methodologies/_masvs-base/) for mobile apps. Use this WHENEVER the user
+  asks to "create a <framework> methodology", "build/add/generate an ASVS or
+  MASVS methodology" for a stack (Ruby on Rails, .NET / ASP.NET, Node.js /
+  Express, Django, Flask, Laravel, Spring Boot, Go, Angular, React — or mobile:
+  Flutter, React Native, native Android/Kotlin, native iOS/Swift), to "map ASVS
+  to <framework>" or "map MASVS to <app>", or wants a per-chapter / per-category
+  pentest methodology with test payloads and secure-vs-insecure evidence. It
+  picks the right base, walks it in order, and projects each requirement/control
+  onto the target stack: the concrete mechanism/sink, how to test it, payload(s)
+  or static+dynamic steps, and positive (secure) vs negative (insecure)
+  evidence. Always use this for methodology-authoring requests in this repo even
+  if the user does not say "ASVS" or "MASVS".
 ---
 
-# Create a framework methodology from the ASVS base
+# Create a framework methodology from an OWASP verification-standard base
 
-This repo separates **what** must hold (the vendored OWASP ASVS 5.0 standard)
+This repo separates **what** must hold (a vendored OWASP verification standard)
 from **how to test it on a given stack** (framework methodologies). Your job
 when this skill triggers is to produce the second from the first, so coverage
 is complete and consistent across every framework.
 
-- **Base (source of truth):** [`methodologies/_asvs-base/`](../../../methodologies/_asvs-base/) — one page per ASVS chapter V1–V17, 345 requirements, IDs/levels/text verbatim from `upstream/ASVS`. **Never invent requirements; read them from here.**
-- **Output:** `methodologies/<framework>/` — one page per ASVS chapter, mirroring the base 1:1, plus a `README.md` index.
 - **Style exemplars:** [`methodologies/springboot/README.md`](../../../methodologies/springboot/README.md) and [`methodologies/angular/README.md`](../../../methodologies/angular/README.md) show the house voice: concrete sinks, copy-paste payloads, terse "secure vs insecure" tells, links into `upstream/PayloadsAllTheThings`. (A Ruby on Rails methodology, if present, is the closest ASVS-aligned example.)
+
+## Step 0 — Pick the base (web → ASVS, mobile → MASVS)
+
+There are two bases. One skill, one projection contract; the base is what
+varies. Choose by what the target *is*:
+
+| Target | Base | Shape |
+|---|---|---|
+| Web app, HTTP API, backend framework (Rails, Django, Spring Boot, Express, ASP.NET, …) | [`methodologies/_asvs-base/`](../../../methodologies/_asvs-base/) | 17 chapters (V1–V17), 345 requirements, IDs/levels/text verbatim from `upstream/ASVS` |
+| Mobile app (Flutter, React Native, native Android/iOS) | [`methodologies/_masvs-base/`](../../../methodologies/_masvs-base/) | 8 categories, 24 controls verbatim from `upstream/MASVS`, each linked to MASTG v2 test procedures in `upstream/MASTG` |
+
+**A mobile app usually needs both.** The client (on-device storage, crypto,
+pinning, platform interaction, resilience) is **MASVS**; its REST/GraphQL
+**backend** is a normal **ASVS** target. For a mobile request, generate the
+MASVS methodology for the client and, unless the user scopes it out, also cover
+the backend against the ASVS base (a short backend page or a note pointing at a
+companion ASVS methodology). If it is genuinely unclear whether the user wants
+the client, the backend, or both, ask — otherwise default to **both** for a
+mobile app and state it.
+
+**Never invent requirements/controls; read them from the chosen base.** The
+rest of this skill is written in ASVS ("chapter/requirement") terms; for a
+mobile target read **category** for chapter and **control** for requirement,
+and see **Mobile specifics** below for the two places the flow differs
+(output structure and the static/dynamic evidence axes).
+
+- **Output:** `methodologies/<framework>/` — one page per base chapter/category, mirroring the base 1:1, plus a `README.md` index.
 
 ## Step 1 — Scope
 
 Settle these before writing. Ask the user only if a choice is genuinely
 unclear from the request; otherwise pick the sensible default and state it.
 
-- **Framework / stack** (required) — e.g. "Ruby on Rails", "ASP.NET Core", "Express + Prisma". Pin the dominant libraries for each concern (auth, ORM, templating, session) because the projection is library-specific (Rails→Devise/ActiveRecord; Django→`django.contrib.auth`/ORM; Express→Passport/Sequelize, etc.).
-- **ASVS level** (default **L2**) — L1 baseline, L2 standard (most apps), L3 high-assurance. Cover every requirement at or below the target level; mention higher-level ones only where cheap.
-- **Test posture** (default **black/grey-box**, offensive tester) — this governs which requirements are directly testable vs. only verifiable with source.
+- **Framework / stack** (required) — e.g. "Ruby on Rails", "ASP.NET Core", "Express + Prisma", "Flutter", "React Native". Pin the dominant libraries for each concern because the projection is library-specific (web: Rails→Devise/ActiveRecord; Django→`django.contrib.auth`/ORM; Express→Passport/Sequelize. mobile: Flutter→`flutter_secure_storage`/Dio/`pointycastle`; RN→AsyncStorage/Keychain bridges; native→Keystore/Keychain).
+- **Level / profile** (default **L2**) — ASVS: L1 baseline, L2 standard, L3 high-assurance. MASVS: `L1` baseline, `L2` defense-in-depth, and `R` resilience (anti-reversing/tampering — the MASVS-RESILIENCE category; include it only when the app has a meaningful threat model for it, e.g. DRM, anti-fraud, payments). Cover every item at or below the target; mention higher ones only where cheap.
+- **Test posture** (default **black/grey-box**, offensive tester) — governs what is directly testable vs. only verifiable with source. For mobile, also note **artifact access**: do you have the APK/IPA, and is it a debug or release build? (Decompilation and instrumentation depth depend on it.)
+- **Platform** (mobile only, default **both**) — Android, iOS, or both. The MASTG test rows in the base are platform-tagged; projecting onto Flutter means covering both unless scoped to one.
 
 ## Step 2 — Read the base, chapter by chapter
 
-Process ASVS chapters **in order V1→V17**. For each chapter, read its base
-page (e.g. `methodologies/_asvs-base/V06-Authentication.md`) and work through
-every requirement row. Do not batch from memory — the requirement text is the
-contract.
+Process the base pages **in order** — ASVS chapters V1→V17, or MASVS categories
+STORAGE→CRYPTO→AUTH→NETWORK→PLATFORM→CODE→RESILIENCE→PRIVACY. For each, read its
+base page (e.g. `methodologies/_asvs-base/V06-Authentication.md`, or
+`methodologies/_masvs-base/MASVS-STORAGE.md`) and work through every
+requirement/control row. For MASVS, also open the linked **MASTG test**
+procedures for that category — they carry the concrete static/dynamic steps,
+commands, and tooling you project onto the stack. Do not batch from memory —
+the requirement/control text is the contract.
 
 ## Step 3 — Output structure
 
@@ -99,10 +132,47 @@ concrete — status code, decisive header, body text, redirect, timing, or
 persisted-state change — not "it works" / "it's vulnerable". Prefer a real
 `HTTP` request/response sketch or a `curl` one-liner when an input is sent.
 
+## Mobile specifics (MASVS targets only)
+
+Two places the flow differs from the web/ASVS case:
+
+**Output structure.** One page per **MASVS category**, named to mirror the base:
+`MASVS-STORAGE.md`, `MASVS-CRYPTO.md`, `MASVS-AUTH.md`, `MASVS-NETWORK.md`,
+`MASVS-PLATFORM.md`, `MASVS-CODE.md`, `MASVS-RESILIENCE.md`, `MASVS-PRIVACY.md`,
+plus `README.md`. Organize each page **by control** (`## MASVS-STORAGE-1`), and
+under it group the relevant **MASTG tests** you projected. The `README.md`
+fingerprinting quick-ref is mobile-flavoured: how to confirm the framework
+(e.g. Flutter → `libapp.so` + `libflutter.so`, `flutter_assets/` in the APK;
+RN → `index.android.bundle`), how to get the artifact, and the tooling baseline.
+
+**Evidence axes.** Mobile findings are **static + dynamic**, not request/
+response. For each control render, where applicable:
+
+- **Mechanism / sink** — the platform/framework API, storage location, manifest/
+  plist entry, or code pattern (e.g. Flutter `shared_preferences` → plaintext
+  XML/plist; `flutter_secure_storage` → Keystore/Keychain).
+- **Static** — decompile/inspect: `apktool`, `jadx`, Blutter/reFlutter for the
+  Dart snapshot, `strings` on `libapp.so`, manifest/`Info.plist`,
+  `codesign`/`otool`/`class-dump`.
+- **Dynamic** — runtime: Frida/Objection hooks, filesystem dump after use,
+  proxy traffic (mitmproxy/Burp) — noting Flutter ignores the system proxy and
+  pins at the BoringSSL layer, so interception needs reFlutter / a Frida
+  `ssl_verify` bypass / `proxydroid`, not just a trusted CA.
+- **Positive (secure) / Negative (insecure) evidence** — the concrete on-device
+  artifact: "secret absent from `shared_prefs/*.xml`, present only in Keystore"
+  vs "API key in cleartext in `strings libapp.so`".
+
+The MASVS-RESILIENCE category (root/jailbreak detection, anti-hooking, anti-
+tampering, obfuscation) is the `R` profile — test it as *controls to defeat*
+(does a Frida attach / rooted device / repackaged APK get detected and the app
+refuse to run?), and treat its absence as a resilience gap, not a vuln per se.
+
 ## Step 5 — Wire it up
 
 - Add a pointer to the repo root `README.md` methodologies list (match the
-  existing Angular/Spring Boot entries).
+  existing Angular/Spring Boot entries). For a mobile methodology note the base
+  it was generated from (MASVS v2) and, if a companion backend methodology was
+  produced, cross-link the two.
 - If the user asked to commit/push, branch (`<framework>-methodology`), commit
   with the repo's attribution convention, and follow the push flow already
   established. Don't commit the `upstream/` submodules or unrelated working-tree

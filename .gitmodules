@@ -19,3 +19,9 @@
 [submodule "upstream/ASVS"]
 	path = upstream/ASVS
 	url = https://github.com/OWASP/ASVS.git
+[submodule "upstream/MASVS"]
+	path = upstream/MASVS
+	url = https://github.com/OWASP/masvs.git
+[submodule "upstream/MASTG"]
+	path = upstream/MASTG
+	url = https://github.com/OWASP/mastg.git
