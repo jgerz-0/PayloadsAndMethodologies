@@ -15,6 +15,7 @@ stacks that it doesn't go deep on.
   * [MASVS](upstream/MASVS/) (OWASP Mobile Application Security Verification Standard)
   * [MASTG](upstream/MASTG/) (OWASP Mobile Application Security Testing Guide)
   * [prowler](upstream/prowler/) (cloud security scanner — CIS-derived checks for AWS/GCP/Azure/…)
+  * [kubernetes-top-ten](upstream/kubernetes-top-ten/) (OWASP Kubernetes Top 10)
   * [ysoserial.net](upstream/ysoserial.net/)
   * [awesome-nodejs-security](upstream/awesome-nodejs-security/)
   * [graphql-threat-matrix](upstream/graphql-threat-matrix/)
@@ -29,6 +30,8 @@ stacks that it doesn't go deep on.
   * [**Cloud attack base**](methodologies/_cloud-base/README.md) — the **cloud**
     sibling (OWASP has no cloud standard), one page per MITRE ATT&CK cloud tactic
     (12), techniques verbatim + cross-referenced Prowler config checks.
+  * [**Kubernetes base**](methodologies/_kubernetes-base/README.md) — OWASP
+    Kubernetes Top 10 (2025), K01–K10 verbatim + ATT&CK Containers + Prowler k8s.
 
     The framework methodologies below are generated from the right base by
     projecting each ASVS requirement / MASVS control / ATT&CK technique onto the
@@ -46,6 +49,7 @@ stacks that it doesn't go deep on.
   * [AWS](methodologies/aws/README.md)
   * [GCP](methodologies/gcp/README.md)
   * [Azure](methodologies/azure/README.md)
+  * [Kubernetes](methodologies/kubernetes/README.md) — OWASP K8s Top 10-aligned
 
   Pointer pages into the other submodules above, for stacks where a popular
   community methodology/tool already covers it well:
