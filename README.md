@@ -14,6 +14,7 @@ stacks that it doesn't go deep on.
   * [ASVS](upstream/ASVS/) (OWASP Application Security Verification Standard)
   * [MASVS](upstream/MASVS/) (OWASP Mobile Application Security Verification Standard)
   * [MASTG](upstream/MASTG/) (OWASP Mobile Application Security Testing Guide)
+  * [prowler](upstream/prowler/) (cloud security scanner — CIS-derived checks for AWS/GCP/Azure/…)
   * [ysoserial.net](upstream/ysoserial.net/)
   * [awesome-nodejs-security](upstream/awesome-nodejs-security/)
   * [graphql-threat-matrix](upstream/graphql-threat-matrix/)
@@ -25,10 +26,13 @@ stacks that it doesn't go deep on.
   * [**MASVS v2 base**](methodologies/_masvs-base/README.md) — the **mobile**
     sibling, one page per MASVS category (8), controls verbatim + linked MASTG
     test procedures.
+  * [**Cloud attack base**](methodologies/_cloud-base/README.md) — the **cloud**
+    sibling (OWASP has no cloud standard), one page per MITRE ATT&CK cloud tactic
+    (12), techniques verbatim + cross-referenced Prowler config checks.
 
     The framework methodologies below are generated from the right base by
-    projecting each ASVS requirement / MASVS control onto the stack, via the
-    `create-methodology` skill
+    projecting each ASVS requirement / MASVS control / ATT&CK technique onto the
+    stack, via the `create-methodology` skill
     ([`.claude/skills/create-methodology`](.claude/skills/create-methodology/SKILL.md)).
 
   Originally authored for stacks with no good existing equivalent:

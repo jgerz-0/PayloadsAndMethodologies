@@ -25,3 +25,6 @@
 [submodule "upstream/MASTG"]
 	path = upstream/MASTG
 	url = https://github.com/OWASP/mastg.git
+[submodule "upstream/prowler"]
+	path = upstream/prowler
+	url = https://github.com/prowler-cloud/prowler.git

@@ -2,20 +2,22 @@
 name: create-methodology
 description: >-
   Generate a framework-specific offensive-security testing methodology from the
-  OWASP verification-standard bases in this repo — the ASVS 5.0 base
-  (methodologies/_asvs-base/) for web apps / APIs / backends, and the MASVS v2
-  base (methodologies/_masvs-base/) for mobile apps. Use this WHENEVER the user
-  asks to "create a <framework> methodology", "build/add/generate an ASVS or
-  MASVS methodology" for a stack (Ruby on Rails, .NET / ASP.NET, Node.js /
-  Express, Django, Flask, Laravel, Spring Boot, Go, Angular, React — or mobile:
-  Flutter, React Native, native Android/Kotlin, native iOS/Swift), to "map ASVS
-  to <framework>" or "map MASVS to <app>", or wants a per-chapter / per-category
-  pentest methodology with test payloads and secure-vs-insecure evidence. It
-  picks the right base, walks it in order, and projects each requirement/control
-  onto the target stack: the concrete mechanism/sink, how to test it, payload(s)
-  or static+dynamic steps, and positive (secure) vs negative (insecure)
-  evidence. Always use this for methodology-authoring requests in this repo even
-  if the user does not say "ASVS" or "MASVS".
+  verification-standard bases in this repo — the ASVS 5.0 base
+  (methodologies/_asvs-base/) for web apps / APIs / backends, the MASVS v2 base
+  (methodologies/_masvs-base/) for mobile apps, and the cloud base
+  (methodologies/_cloud-base/, MITRE ATT&CK Cloud + Prowler) for cloud
+  environments. Use this WHENEVER the user asks to "create a <framework/
+  platform> methodology", "build/add/generate a methodology" for a stack (Ruby
+  on Rails, .NET / ASP.NET, Node.js / Express, Django, Spring Boot, Angular,
+  React; mobile: Flutter, React Native, native Android/iOS; or cloud: AWS, GCP,
+  Azure, Kubernetes, M365/Entra), to "map ASVS/MASVS/ATT&CK to <target>", or
+  wants a per-chapter / per-category / per-tactic pentest methodology with test
+  payloads and secure-vs-insecure evidence. It picks the right base, walks it in
+  order, and projects each requirement/control/technique onto the target: the
+  concrete mechanism/sink/service, how to test it, payload(s) or static+dynamic
+  or enumerate+attempt steps, and positive (secure) vs negative (insecure/
+  vulnerable) evidence. Always use this for methodology-authoring requests in
+  this repo even if the user does not say "ASVS", "MASVS", or "ATT&CK".
 ---
 
 # Create a framework methodology from an OWASP verification-standard base
@@ -27,30 +29,29 @@ is complete and consistent across every framework.
 
 - **Style exemplars:** [`methodologies/springboot/README.md`](../../../methodologies/springboot/README.md) and [`methodologies/angular/README.md`](../../../methodologies/angular/README.md) show the house voice: concrete sinks, copy-paste payloads, terse "secure vs insecure" tells, links into `upstream/PayloadsAllTheThings`. (A Ruby on Rails methodology, if present, is the closest ASVS-aligned example.)
 
-## Step 0 — Pick the base (web → ASVS, mobile → MASVS)
+## Step 0 — Pick the base (web → ASVS, mobile → MASVS, cloud → ATT&CK/Prowler)
 
-There are two bases. One skill, one projection contract; the base is what
+There are three bases. One skill, one projection contract; the base is what
 varies. Choose by what the target *is*:
 
 | Target | Base | Shape |
 |---|---|---|
 | Web app, HTTP API, backend framework (Rails, Django, Spring Boot, Express, ASP.NET, …) | [`methodologies/_asvs-base/`](../../../methodologies/_asvs-base/) | 17 chapters (V1–V17), 345 requirements, IDs/levels/text verbatim from `upstream/ASVS` |
 | Mobile app (Flutter, React Native, native Android/iOS) | [`methodologies/_masvs-base/`](../../../methodologies/_masvs-base/) | 8 categories, 24 controls verbatim from `upstream/MASVS`, each linked to MASTG v2 test procedures in `upstream/MASTG` |
+| Cloud environment / control plane (AWS, GCP, Azure, K8s, M365/Entra) | [`methodologies/_cloud-base/`](../../../methodologies/_cloud-base/) | 12 ATT&CK cloud tactics, 188 techniques verbatim from MITRE ATT&CK, cross-referenced to Prowler config checks in `upstream/prowler` |
 
-**A mobile app usually needs both.** The client (on-device storage, crypto,
-pinning, platform interaction, resilience) is **MASVS**; its REST/GraphQL
-**backend** is a normal **ASVS** target. For a mobile request, generate the
-MASVS methodology for the client and, unless the user scopes it out, also cover
-the backend against the ASVS base (a short backend page or a note pointing at a
-companion ASVS methodology). If it is genuinely unclear whether the user wants
-the client, the backend, or both, ask — otherwise default to **both** for a
-mobile app and state it.
+**Some targets need more than one base.** A **mobile app**: client = MASVS, its
+backend = ASVS — generate MASVS and, unless scoped out, cover the backend
+against ASVS. A **cloud engagement**: control plane = this cloud base, the apps
+running on it = ASVS, any mobile client = MASVS. If it is genuinely unclear
+which surface the user wants, ask — otherwise default to the primary target's
+base, name the others as adjacent scope, and state it.
 
-**Never invent requirements/controls; read them from the chosen base.** The
-rest of this skill is written in ASVS ("chapter/requirement") terms; for a
-mobile target read **category** for chapter and **control** for requirement,
-and see **Mobile specifics** below for the two places the flow differs
-(output structure and the static/dynamic evidence axes).
+**Never invent requirements/controls/techniques; read them from the chosen
+base.** The rest of this skill is written in ASVS ("chapter/requirement") terms;
+for a mobile target read **category**/**control**, for a cloud target read
+**tactic**/**technique**. See **Mobile specifics** and **Cloud specifics** below
+for where the flow differs (output structure and the evidence axes).
 
 - **Output:** `methodologies/<framework>/` — one page per base chapter/category, mirroring the base 1:1, plus a `README.md` index.
 
@@ -166,6 +167,47 @@ The MASVS-RESILIENCE category (root/jailbreak detection, anti-hooking, anti-
 tampering, obfuscation) is the `R` profile — test it as *controls to defeat*
 (does a Frida attach / rooted device / repackaged APK get detected and the app
 refuse to run?), and treat its absence as a resilience gap, not a vuln per se.
+
+## Cloud specifics (ATT&CK/Prowler targets only)
+
+Two places the flow differs from the web/ASVS case:
+
+**Output structure.** Cloud methodologies are organized by **kill-chain phase**,
+not one page per tactic — an engagement runs as a chain. Create `methodologies/
+<provider>/` (e.g. `aws/`, `gcp/`, `azure/`) with a `README.md` (the provider's
+auth/identity model, recon + enumeration, Prowler/ScoutSuite/Pacu tooling,
+assumed-breach vs black-box starting point) plus phase pages:
+`01-recon-and-enumeration.md`, `02-access-and-credentials.md`,
+`03-privilege-escalation.md`, `04-lateral-movement-and-persistence.md`,
+`05-evasion.md`, `06-collection-exfil-impact.md`. Each phase page covers the
+ATT&CK tactic(s) the base maps to that phase (see
+[`_cloud-base/README.md`](../../../methodologies/_cloud-base/README.md)), and
+organizes by **technique ID**, cross-linking the base tactic page.
+
+**Evidence axes.** Cloud findings are **enumerate → attempt**, against a
+provider API — not request/response on a URL. For each technique render, where
+applicable:
+
+- **Service / sink** — the concrete service/API/resource (IAM, STS, S3,
+  Metadata/IMDS, KMS, Lambda, Entra ID, GCS, IAM bindings, service accounts).
+- **How to test** — the enumeration step then the attempt: the CLI/API call
+  (`aws`, `gcloud`, `az`, `kubectl`) or tool (Pacu, ScoutSuite, enumerate-iam,
+  ROADtools, GCPBucketBrute). Give the actual command.
+- **Positive evidence (secure)** — `AccessDenied` / `403` / SCP or guardrail
+  blocks it / MFA challenge.
+- **Negative evidence (vulnerable)** — the call succeeds, creds/data returned,
+  the role is assumable — the confirmation signal. **Name the Prowler check ID**
+  that detects the underlying misconfiguration (e.g. `ec2_imdsv2_enabled`,
+  `iam_policy_no_administrative_privileges`) so the offensive finding ties to the
+  detective control. Prowler check IDs live under
+  `upstream/prowler/prowler/providers/<provider>/services/.../<check>.metadata.json`
+  (only AWS checks carry `TTPs/<tactic>` tags; for Azure/GCP find checks by
+  service/category).
+
+Authorization note: real cloud testing needs explicit provider authorization
+(AWS/Azure/GCP each have pentest rules); assume an **authorized** engagement and
+say so. Prefer non-destructive confirmation (read/enumerate, dry-run) over
+anything that modifies or impacts resources.
 
 ## Step 5 — Wire it up
 
