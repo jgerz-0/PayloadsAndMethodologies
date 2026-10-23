@@ -38,7 +38,8 @@ varies. Choose by what the target *is*:
 |---|---|---|
 | Web app, HTTP API, backend framework (Rails, Django, Spring Boot, Express, ASP.NET, …) | [`methodologies/_asvs-base/`](../../../methodologies/_asvs-base/) | 17 chapters (V1–V17), 345 requirements, IDs/levels/text verbatim from `upstream/ASVS` |
 | Mobile app (Flutter, React Native, native Android/iOS) | [`methodologies/_masvs-base/`](../../../methodologies/_masvs-base/) | 8 categories, 24 controls verbatim from `upstream/MASVS`, each linked to MASTG v2 test procedures in `upstream/MASTG` |
-| Cloud environment / control plane (AWS, GCP, Azure, K8s, M365/Entra) | [`methodologies/_cloud-base/`](../../../methodologies/_cloud-base/) | 12 ATT&CK cloud tactics, 188 techniques verbatim from MITRE ATT&CK, cross-referenced to Prowler config checks in `upstream/prowler` |
+| Cloud environment / control plane (AWS, GCP, Azure, OCI, M365/Entra, Google Workspace) | [`methodologies/_cloud-base/`](../../../methodologies/_cloud-base/) | 12 ATT&CK cloud tactics, 188 techniques verbatim from MITRE ATT&CK, cross-referenced to Prowler config checks in `upstream/prowler` |
+| CI/CD & source-control platform (GitHub, GitLab, Jenkins, …) | [`methodologies/_cicd-base/`](../../../methodologies/_cicd-base/) | OWASP Top 10 CI/CD Security Risks, CICD-SEC-1..10 verbatim from `upstream/cicd-top-10`, cross-referenced to Prowler `github` checks |
 
 **Some targets need more than one base.** A **mobile app**: client = MASVS, its
 backend = ASVS — generate MASVS and, unless scoped out, cover the backend

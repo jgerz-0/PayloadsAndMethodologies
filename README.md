@@ -15,6 +15,7 @@ stacks that it doesn't go deep on.
   * [MASVS](upstream/MASVS/) (OWASP Mobile Application Security Verification Standard)
   * [MASTG](upstream/MASTG/) (OWASP Mobile Application Security Testing Guide)
   * [prowler](upstream/prowler/) (cloud security scanner — CIS-derived checks for AWS/GCP/Azure/…)
+  * [cicd-top-10](upstream/cicd-top-10/) (OWASP Top 10 CI/CD Security Risks)
   * [ysoserial.net](upstream/ysoserial.net/)
   * [awesome-nodejs-security](upstream/awesome-nodejs-security/)
   * [graphql-threat-matrix](upstream/graphql-threat-matrix/)
@@ -29,6 +30,9 @@ stacks that it doesn't go deep on.
   * [**Cloud attack base**](methodologies/_cloud-base/README.md) — the **cloud**
     sibling (OWASP has no cloud standard), one page per MITRE ATT&CK cloud tactic
     (12), techniques verbatim + cross-referenced Prowler config checks.
+  * [**CI/CD base**](methodologies/_cicd-base/README.md) — OWASP Top 10 CI/CD
+    Security Risks (CICD-SEC-1..10) verbatim + Prowler `github` checks, for
+    GitHub/GitLab/pipeline testing.
 
     The framework methodologies below are generated from the right base by
     projecting each ASVS requirement / MASVS control / ATT&CK technique onto the
@@ -46,6 +50,10 @@ stacks that it doesn't go deep on.
   * [AWS](methodologies/aws/README.md)
   * [GCP](methodologies/gcp/README.md)
   * [Azure](methodologies/azure/README.md)
+
+  CI/CD & SCM (generated from the CI/CD base):
+  * [GitHub](methodologies/github/README.md)
+  * [GitLab](methodologies/gitlab/README.md)
 
   Pointer pages into the other submodules above, for stacks where a popular
   community methodology/tool already covers it well:

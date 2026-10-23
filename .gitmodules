@@ -28,3 +28,6 @@
 [submodule "upstream/prowler"]
 	path = upstream/prowler
 	url = https://github.com/prowler-cloud/prowler.git
+[submodule "upstream/cicd-top-10"]
+	path = upstream/cicd-top-10
+	url = https://github.com/OWASP/www-project-top-10-ci-cd-security-risks.git
