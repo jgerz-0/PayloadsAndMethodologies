@@ -46,6 +46,9 @@ stacks that it doesn't go deep on.
   * [AWS](methodologies/aws/README.md)
   * [GCP](methodologies/gcp/README.md)
   * [Azure](methodologies/azure/README.md)
+  * [OCI (Oracle Cloud)](methodologies/oci/README.md)
+  * [Microsoft 365](methodologies/m365/README.md)
+  * [Google Workspace](methodologies/googleworkspace/README.md)
 
   Pointer pages into the other submodules above, for stacks where a popular
   community methodology/tool already covers it well:
